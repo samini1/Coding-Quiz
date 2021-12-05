@@ -4,7 +4,7 @@ let correct = 0;
 let score = 0;
 let scoreDisplay = document.querySelector("#result")
 let timeLeft = 100;
-let localStorageName = "wQuiz";
+let scoreTable= document.querySelector(".score-list");
 
 
 
@@ -133,14 +133,21 @@ function startQuiz() {
     document.querySelector("#question-container").setAttribute("style", "display: block");
     startTimer();
 }
-
+// Need to submit/output high scores
 function highScore() {
+    let scoreListEl= document.createElement("li");
+    scoreListEl.textContent = //player name + score;
+    document.querySelector(".score-list").appendChild(scoreListEl);
+
     highScoresSave= JSON.stringify(highScores);
     localStorage.setItem("saveJSON", highScoresSave);
 
     oldScoresText = localStorage.getItem("saveJSON");
     oldScoresObj = JSON.parse(oldScoresText);
+}
 
+function getHighScore() {
+    scoreTable.innerHTML = oldScoresObj.map((row))
 }
 
 //
