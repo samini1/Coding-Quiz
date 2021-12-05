@@ -4,6 +4,8 @@ let correct = 0;
 let score = 0;
 let scoreDisplay = document.querySelector("#result")
 let timeLeft = 100;
+let localStorageName = "wQuiz";
+
 
 
 const questions = [
@@ -44,6 +46,30 @@ const questions = [
     },
 ];
 
+const highScores = [
+    {
+        name: "",
+        value: "0"
+    },
+    {
+        name: "",
+        value: "0"
+    },
+    {
+        name: "",
+        value: "0"
+    },
+    {
+        name: "",
+        value: "0"
+    },
+    {
+        name: "",
+        value: "0"
+    },
+    
+
+]
 
 
 function callQuestion() {
@@ -63,9 +89,10 @@ function callQuestion() {
 
     else if (current = questions.length){
         score = (timeLeft * 100 * correct /questions.length);
-        scoreDisplay.textContent = "Your score is " + score;
+        scoreDisplay.textContent = "Your score is " + score + ". Enter your name:"; 
         document.querySelector("#question-container").setAttribute("style", "display: none");
         document.querySelector("#result-container").setAttribute("style", "display: block");
+
        
     }
 }
@@ -90,13 +117,16 @@ var timeInterval = setInterval(function(){
     if (timeLeft>0) {
         timerEl.textContent = timeLeft + ' seconds';
         timeLeft--;
-    } else if (timeLeft === 0) {
-        let timeLeft =0;
+    } else {
+        timerEl.textContent = timeLeft;
+
     }
     
 
     }, 1000);
 }
+
+
 
 function startQuiz() {
     document.querySelector("#start-btn").setAttribute("style", "display: none");
@@ -104,8 +134,17 @@ function startQuiz() {
     startTimer();
 }
 
+function highScore() {
+    highScoresSave= JSON.stringify(highScores);
+    localStorage.setItem("saveJSON", highScoresSave);
+
+    oldScoresText = localStorage.getItem("saveJSON");
+    oldScoresObj = JSON.parse(oldScoresText);
+
+}
 
 //
 document.querySelector("#start-btn").addEventListener("click", startQuiz)
 document.querySelector(".correct").addEventListener("click", showAnswer);
 document.querySelector(".incorrect").addEventListener("click", wrongAnswer);
+document.querySelector("#player-name").addEventListener("submit", highScore);
