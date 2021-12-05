@@ -41,6 +41,8 @@ const questions = [
     },
 ];
 
+function startQuiz() {}
+
 function callQuestion() {
     if (current < questions.length){
         console.log(current);
@@ -94,5 +96,6 @@ var timeInterval = setInterval(function(){
 
 
 //
+document.querySelector("#start-btn").addEventListener("click", startQuiz)
 document.querySelector(".correct").addEventListener("click", showAnswer);
 document.querySelector(".incorrect").addEventListener("click", wrongAnswer);
