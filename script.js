@@ -41,7 +41,7 @@ const questions = [
     },
 ];
 
-function startQuiz() {}
+
 
 function callQuestion() {
     if (current < questions.length){
@@ -79,11 +79,11 @@ function wrongAnswer(){
 //function starts the timer
 const startTimer = function(){
 timerEl = document.querySelector("#timer");
-let timeLeft = 100;
+let timeLeft = 99;
 
 var timeInterval = setInterval(function(){
     if (timeLeft>0) {
-        timerEl.textContent = timeLeft + 'seconds';
+        timerEl.textContent = timeLeft + ' seconds';
         timeLeft--;
     } else {
         timeLeft = 0;
@@ -92,7 +92,11 @@ var timeInterval = setInterval(function(){
     }, 1000);
 }
 
-
+function startQuiz() {
+    document.querySelector("#start-btn").setAttribute("style", "display: none");
+    document.querySelector("#question-container").setAttribute("style", "display: block");
+    startTimer();
+}
 
 
 //
