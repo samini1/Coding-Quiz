@@ -1,6 +1,9 @@
 // bundle question and choices in an object?
 let current = 0;
 let correct = 0;
+let score = 0;
+let scoreDisplay = document.querySelector("#result")
+let timeLeft = 100;
 
 
 const questions = [
@@ -26,7 +29,7 @@ const questions = [
         choiceD: "width",
     },
     {
-        question: "which CSS property would you change to specify the space around an element's contents?",
+        question: "Which CSS property would you change to specify the space around an element's contents?",
         choiceA: "padding",
         choiceB: "margin",
         choiceC: "border",
@@ -59,8 +62,10 @@ function callQuestion() {
     }
 
     else if (current = questions.length){
+        score = (timeLeft * 100 * correct /questions.length);
+        scoreDisplay.textContent = "Your score is " + score;
         document.querySelector("#question-container").setAttribute("style", "display: none");
-        document.querySelector("#result-container").setAttribute("style", "display: show");
+        document.querySelector("#result-container").setAttribute("style", "display: block");
        
     }
 }
@@ -85,9 +90,10 @@ var timeInterval = setInterval(function(){
     if (timeLeft>0) {
         timerEl.textContent = timeLeft + ' seconds';
         timeLeft--;
-    } else {
-        timeLeft = 0;
+    } else if (timeLeft === 0) {
+        let timeLeft =0;
     }
+    
 
     }, 1000);
 }
