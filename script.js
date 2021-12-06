@@ -5,23 +5,24 @@ let score = 0;
 let scoreDisplay = document.querySelector("#result")
 let timeLeft = 100;
 let scoreTable= document.querySelector(".score-list");
+let playerName = document.querySelector("#player-name").value;
 
-
-
-const questions = [
+let questions = [
     {
         question: 'What does "DOM" stand for?',
         choiceA: "Document Object Model",
         choiceB: "Develop On Main",
         choiceC: "Do Often More",
         choiceD: "My cousin, Dominic.",
+        right: "A"
     },
     {
         question: "Which of the following is a non-semantic element in HTML?",
-        choiceA: "<header>",
-        choiceB: "<section>",
-        choiceC: "<footer>",
-        choiceD: "<div>",
+        choiceA: "header",
+        choiceB: "section",
+        choiceC: "footer",
+        choiceD: "div",
+        right: "D"
     },
     {
         question: "Which CSS property would you change to add space around an element?",
@@ -29,6 +30,7 @@ const questions = [
         choiceB: "margin",
         choiceC: "border",
         choiceD: "width",
+        right: "B"
     },
     {
         question: "Which CSS property would you change to specify the space around an element's contents?",
@@ -36,6 +38,7 @@ const questions = [
         choiceB: "margin",
         choiceC: "border",
         choiceD: "width",
+        right: "A"
     },
     {
         question: "Which of these HTML DOM events can you register to an event handler using JavaScript?",
@@ -43,10 +46,11 @@ const questions = [
         choiceB: "focus",
         choiceC: "submit",
         choiceD: "All of the above",
+        right: "D"
     },
 ];
 
-const highScores = [
+let highScores = [
     {
         name: "",
         value: "0"
@@ -79,16 +83,16 @@ function callQuestion() {
 
     // //create and append questions and choices each time player moves to next question
     question.innerHTML = "<p>" + questions[current].question + "</p>";
-    choiceA.textContent= questions[current].choiceA;
-    choiceB.textContent= questions[current].choiceB;
-    choiceC.textContent= questions[current].choiceC;
-    choiceD.textContent= questions[current].choiceD;
+    document.querySelector("#A").innerHTML= questions[current].choiceA;
+    document.querySelector("#B").innerHTML= questions[current].choiceB;
+    document.querySelector("#C").innerHTML= questions[current].choiceC;
+    document.querySelector("#D").innerHTML= questions[current].choiceD;
 
     current=current+1;
     }
 
-    else if (current = questions.length){
-        score = (timeLeft * 100 * correct /questions.length);
+    else if (current === questions.length){
+        score = (timeLeft + correct * 10);
         scoreDisplay.textContent = "Your score is " + score + ". Enter your name:"; 
         document.querySelector("#question-container").setAttribute("style", "display: none");
         document.querySelector("#result-container").setAttribute("style", "display: block");
@@ -97,28 +101,40 @@ function callQuestion() {
     }
 }
 //function should show whether choice is correct or incorrect
-function showAnswer(){    
+
+function showAnswer(event) {
+    if (questions[current]){
+        rightAnswer();
+    }
+    else {
+        wrongAnswer()
+    }
+}
+
+function rightAnswer(){
     correct=correct+1;
     document.querySelector(".answer").textContent= "Correct!";
-    setTimeout(callQuestion, 1000);     
-
+    setTimeout(callQuestion, 1000); 
 }
-function wrongAnswer(){    
-    document.querySelector(".answer").textContent= "Inorrect";
-    setTimeout(callQuestion, 1000);     
 
+function wrongAnswer(){
+    timeLeft = timeLeft - 10;
+    document.querySelector(".answer").textContent= "Incorrect";
+    setTimeout(callQuestion, 1000)
 }
+
 //function starts the timer
 const startTimer = function(){
 timerEl = document.querySelector("#timer");
 let timeLeft = 99;
 
-var timeInterval = setInterval(function(){
+setInterval(function(){
     if (timeLeft>0) {
         timerEl.textContent = timeLeft + ' seconds';
         timeLeft--;
     } else {
-        timerEl.textContent = timeLeft;
+        timerEl.textContent = timeLeft + 'seconds';
+
 
     }
     
@@ -136,14 +152,8 @@ function startQuiz() {
 // Need to submit/output high scores
 function highScore() {
     let scoreListEl= document.createElement("li");
-    scoreListEl.textContent = //player name + score;
+    scoreListEl.textContent = playerName + score;
     document.querySelector(".score-list").appendChild(scoreListEl);
-
-    highScoresSave= JSON.stringify(highScores);
-    localStorage.setItem("saveJSON", highScoresSave);
-
-    oldScoresText = localStorage.getItem("saveJSON");
-    oldScoresObj = JSON.parse(oldScoresText);
 }
 
 function getHighScore() {
@@ -151,7 +161,6 @@ function getHighScore() {
 }
 
 //
-document.querySelector("#start-btn").addEventListener("click", startQuiz)
-document.querySelector(".correct").addEventListener("click", showAnswer);
-document.querySelector(".incorrect").addEventListener("click", wrongAnswer);
+document.querySelector("#start-btn").addEventListener("click", startQuiz);
+document.querySelector(".choice").addEventListener("click", showAnswer);
 document.querySelector("#player-name").addEventListener("submit", highScore);
